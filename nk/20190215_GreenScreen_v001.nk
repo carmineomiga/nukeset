@@ -1,0 +1,107 @@
+#! /home/j_eong/Nuke11.3v1/libnuke-11.3.1.so -nx
+version 11.3 v1
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="28" w="2560" h="1341" maximized="1" screen="0">
+        <splitter orientation="1">
+            <split size="40"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="1897" stretch="1"/>
+            <splitter orientation="2">
+                <split size="758"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="Viewer.1"/>
+                </dock>
+                <split size="533"/>
+                <dock id="" activePageId="DAG.1">
+                    <page id="DAG.1"/>
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                </dock>
+            </splitter>
+            <split size="615"/>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"/>
+                <page id="uk.co.thefoundry.backgroundrenderview.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name /home/j_eong/test/GreenScreen.nk
+ format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement Nuke
+ workingSpaceLUT linear
+ monitorLut sRGB
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
+}
+Read {
+ inputs 0
+ file_type jpeg
+ file /home/j_eong/test/sea_wave.jpg
+ format "604 340 0 0 604 340 1 "
+ origset true
+ name Read2
+ xpos 301
+ ypos -171
+}
+Reformat {
+ format "852 480 0 0 852 480 1.00156 "
+ name Reformat2
+ xpos 301
+ ypos -64
+}
+set N8273010 [stack 0]
+push 0
+Read {
+ inputs 0
+ file_type jpeg
+ file /home/j_eong/test/girl_greenscreen.jpg
+ format "852 480 0 0 852 480 1.00156 "
+ origset true
+ name Read1
+ xpos 139
+ ypos -168
+}
+Reformat {
+ format "852 480 0 0 852 480 1.00156 "
+ name Reformat1
+ xpos 139
+ ypos -64
+}
+IBKGizmoV3 {
+ inputs 3
+ name IBKGizmoV3_1
+ selected false
+ xpos 201
+ ypos 20
+ st pick
+ colour {0.02315336466 0.9734451175 0.01520851161}
+ level 0.06
+}
+push $N8273010
+Merge2 {
+ inputs 2
+ name Merge1
+ xpos 242
+ ypos 65
+}
+Viewer {
+ frame 1
+ frame_range 1-100
+ colour_sample_bbox {0.672185421 0.4139072895 0.6754966974 0.4172185361}
+ samplepoints {{0.672185421 0.4139072895}
+   }
+ name Viewer1
+ xpos 242
+ ypos 106
+}
