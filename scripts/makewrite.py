@@ -42,12 +42,13 @@ class MakeWrite(QWidget):
 		self.reformatSize = self.fm.currentText()
 
 	def bt_ok(self):
+		### reformat 고민중임.
 		reformat = nuke.nodes.Reformat()
 		reformat["type"].setValue("to box")
 		reformat["box_fixed"].setValue(True)
 		reformat["box_width"].setValue(2048)
 		reformat["box_height"].setValue(968)
-	
+		###
 		print self.fm.currentText()
 		print self.ext.currentText()
 		print self.reformat.isChecked()
