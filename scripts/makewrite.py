@@ -42,6 +42,12 @@ class MakeWrite(QWidget):
 		self.reformatSize = self.fm.currentText()
 
 	def bt_ok(self):
+		reformat = nuke.nodes.Reformat()
+		reformat["type"].setValue("to box")
+		reformat["box_fixed"].setValue(True)
+		reformat["box_width"].setValue(2048)
+		reformat["box_height"].setValue(968)
+	
 		print self.fm.currentText()
 		print self.ext.currentText()
 		print self.reformat.isChecked()
@@ -64,25 +70,28 @@ def main():
 	except:
 		pass
 
-	tail = nuke.selectedNode()
-	reformat = nuke.nodes.Reformat()
-	reformat["type"].setValue("to box")
-	reformat["box_fixed"].setValue(True)
-	reformat["box_width"].setValue(2048)
-	reformat["box_height"].setValue(968)
-	reformat.setInput(0, tail)
 
-	timecode = nuke.nodes.AddTimeCode()
-	timecode["startcode"].setValue("01:00:00:00")
-	timecode["useFrame"].setValue(True)
-	timecode["frame"].setValue(1001)
-	timecode.setInput(0, reformat)
-	
-	slate = nuke.nodes.slate()
-	slate.setInput(0, timecode)
-	
-	write = nuke.nodes.Write()
-	write["file_type"].setValue("exr")
-	write["file"].setValue("/test/test.####.exr")
-	write["create_directories"].setValue(True)
-	write.setInput(0, slate)
+#=======================================================
+#
+#	tail = nuke.selectedNode()
+#	reformat = nuke.nodes.Reformat()
+#	reformat["type"].setValue("to box")
+#	reformat["box_fixed"].setValue(True)
+#	reformat["box_width"].setValue(2048)
+#	reformat["box_height"].setValue(968)
+#	reformat.setInput(0, tail)
+#
+#	timecode = nuke.nodes.AddTimeCode()
+#	timecode["startcode"].setValue("01:00:00:00")
+#	timecode["useFrame"].setValue(True)
+#	timecode["frame"].setValue(1001)
+#	timecode.setInput(0, reformat)
+#	
+#	slate = nuke.nodes.slate()
+#	slate.setInput(0, timecode)
+#	
+#	write = nuke.nodes.Write()
+#	write["file_type"].setValue("exr")
+#	write["file"].setValue("/test/test.####.exr")
+#	write["create_directories"].setValue(True)
+#	write.setInput(0, slate)
