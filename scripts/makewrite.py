@@ -1,6 +1,7 @@
 #coding:utf8
 import nuke
 import os
+import pathapi
 from PySide2.QtWidgets import *
 
 class MakeWrite(QWidget):
@@ -32,11 +33,9 @@ class MakeWrite(QWidget):
 		self.ext = QComboBox()
 		self.exts = [".exr", ".dpx", ".tga", ".mov"]
 		self.ext.addItems(self.exts)
-
 		# 이벤트 설정
 		self.ok.clicked.connect(self.pushOK)
 		self.cancel.clicked.connect(self.close)
-
 		# Layout 설정
 		layout = QGridLayout()
 		layout.addWidget(self.reformat, 0, 0)
@@ -50,7 +49,6 @@ class MakeWrite(QWidget):
 		layout.addWidget(self.cancel, 4, 0)
 		layout.addWidget(self.ok, 4, 1)
 		self.setLayout(layout)
-
 		# node list
 		self.linkOrder = []
 
@@ -71,8 +69,28 @@ class MakeWrite(QWidget):
 		self.linkOrder.append(addTimecode)
 
 	def genSlate(self):
+		p = nuke.root().name()
+		seq, err = pathapi.seq(p)
+		if err:
+			nuke.message(err)
+		shot, err = pathapi.shot(p)
+		if err:
+			nuke.message(err)
+		task, err = pathapi.task(p)
+		if err:
+			nuke.message(err)
+		ver, err = pathapi.ver(p)
+		if err:
+			nuke.messager(err)
 		slate = nuke.nodes.slate()
+		slate["vendor"].setValue("Omiga")
+		slate["seq_shot"].setValue(seq+"_"+shot)
+		slate["user"].setValue(os.getenv("USER"))
+		slate["task"].setValue(task)
+		slate["version"].setValue(ver)
+		slate["memo"].setValue(" ")
 		self.linkOrder.append(slate)
+		
 
 	def genWrite(self):
 		write = nuke.nodes.Write()
@@ -80,7 +98,7 @@ class MakeWrite(QWidget):
 		filename, notuse = os.path.splitext(basename)
 		ext = str(self.ext.currentText())
 		write["file_type"].setValue(ext[1:])
-		write["file"].setValue("%s/%s/%s.####%s" % (dirname,filename,filename,ext))
+		write["file"].setValue("%s/out/%s/%s.####%s" % (dirname,filename,filename,ext))
 		write["create_directories"].setValue(True)
 		self.linkOrder.append(write)
 
@@ -107,8 +125,11 @@ class MakeWrite(QWidget):
 		self.linkNodes()
 		self.close()
 
-
 def main():
+	if nuke.root().name() == "Root":
+		nuke.message("파일을 저장해주세요.")
+		return
+
 	if len(nuke.selectedNodes()) != 1:
 		nuke.message("노드를 하나만 선택해주세요.")
 		return
