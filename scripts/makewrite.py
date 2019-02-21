@@ -90,7 +90,6 @@ class MakeWrite(QWidget):
 		slate["version"].setValue(ver)
 		slate["memo"].setValue(" ")
 		self.linkOrder.append(slate)
-		
 
 	def genWrite(self):
 		write = nuke.nodes.Write()
@@ -144,4 +143,3 @@ def main():
 		customApp.show()
 	except:
 		pass
-
