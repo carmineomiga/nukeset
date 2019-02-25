@@ -1,30 +1,61 @@
 #coding:utf8
+from PySide2.QtWidgets import *
+import os
+import nuke
 
-class NkLibrary(Qwidget):
+class NkLibrary(QWidget):
 	def __init__(self):
 		super(NkLibrary, self).__init__()
+		# variable
+		self.libpath = os.getenv("NUKE_PATH")+"/nk/"
+		self.appname = "Nuke Library"
+		self.version = "v0.1"
+		# widget
+		self.nklist = QListWidget()
+		self.addNkList()
 		self.ok = QPushButton("OK")
 		self.cancel = QPushButton("Cancel")
-
-
-		# 이벤트 설정
+		# layout
+		layout = QVBoxLayout()
+		layout.addWidget(self.nklist)
+		layout.addWidget(self.ok)
+		layout.addWidget(self.cancel)
+		self.setWindowTitle(self.appname + " " + self.version)
+		self.setLayout(layout)
+		# event
 		self.ok.clicked.connect(self.pushOK)
 		self.cancel.clicked.connect(self.close)
-		# layout 설정
-		layout = QGridLayout()
-		layout.addWidget(self.cancel, 1, 0)
-		layout.addWidget(self.ok, 1, 1)
+		self.nklist.itemClicked.connect(self.itemClick)
+
+	def itemClick(self, item):
+		self.currentItem = item.text()
+
+	def addNkList(self):
+		if not os.path.exists(self.libpath):
+			nuke.message(self.libpath + "경로가 존재하지 않습니다.")
+		for i in os.listdir(self.libpath):
+			nuke.tprint(i)
+			base, ext = os.path.splitext(i)
+			if ext != ".nk":
+				continue
+			self.nklist.addItem(QListWidgetItem(i))
 
 	def pushOK(self):
-	"""
-	OK 버튼을 누르면, 파일을 불러온다.
-	"""
-
-	self.close()
-
+		nuke.nodePaste(self.libpath + self.currentItem)
+		self.close()
 
 def main():
-	NKLibrary()
+	global customApp
+	try:
+		customApp.close()
+	except:
+		pass
+
+	customApp = NkLibrary()
+	try:
+		customApp.show()
+	except:
+		pass
 
 
 
