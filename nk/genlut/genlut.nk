@@ -1,0 +1,44 @@
+set cut_paste_input [stack 0]
+version 11.3 v1
+BackdropNode {
+ inputs 0
+ name BackdropNode1
+ tile_color 0x4a5a88ff
+ gl_color 0xc5c9ccff
+ label lutgen
+ note_font_size 20
+ selected true
+ xpos -66
+ ypos -207
+ bdwidth 243
+ bdheight 185
+}
+CMSTestPattern {
+ inputs 0
+ name CMSTestPattern1
+ selected true
+ xpos -49
+ ypos -156
+}
+ColorCorrect {
+ name ColorCorrect1
+ selected true
+ xpos -49
+ ypos -84
+}
+GenerateLUT {
+ file "\[python os.getenv('NUKE_PATH')]/luts/test.3dl"
+ file_type .3dl
+ name GenerateLUT1
+ selected true
+ xpos -49
+ ypos -60
+}
+StickyNote {
+ inputs 0
+ name StickyNote1
+ label "save NUKE_PATH/luts"
+ selected true
+ xpos 54
+ ypos -59
+}
