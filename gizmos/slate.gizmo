@@ -2,12 +2,12 @@
 version 11.3 v1
 Gizmo {
  addUserKnob {20 User}
- addUserKnob {1 vender t "print left top position"}
- vender Omiga
+ addUserKnob {1 vendor t "print left top position"}
+ vendor Omiga
  addUserKnob {1 seq_shot t "Sequence_Shot name"}
  seq_shot FOO_0010
- addUserKnob {1 artist_name}
- artist_name jeong
+ addUserKnob {1 user}
+ user jeong
  addUserKnob {4 task M {comp light rnd}}
  addUserKnob {3 version t "only number"}
  version 1
@@ -59,7 +59,7 @@ Gizmo {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
-  message "\[value parent.vender]"
+  message "\[value parent.vendor]"
   old_message {{79 109 105 103 97}
     }
   old_expression_markers {{0 4}
@@ -146,7 +146,7 @@ Gizmo {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
-  message "\[value parent.artist_name] \[value parent.task] v\[format %03d \[value parent.version]]"
+  message "\[value parent.user] \[value parent.task] v\[format %03d \[value parent.version]]"
   old_message {{106 101 111 110 103 32 99 111 109 112 32 118 48 48 49}
     }
   old_expression_markers {{0 4 6 9 12 14}
